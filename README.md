@@ -1,2 +1,2 @@
 # kolibri
-Lightweight helper for creating micro services in go.
+Lightweight helpers for creating micro services in Golang.
