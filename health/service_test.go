@@ -1,9 +1,10 @@
 package health_test
+
 import (
-	"testing"
+	"github.com/dooman87/kolibri/health"
 	"net/http"
 	"net/http/httptest"
-	"github.com/dooman87/transformimgs/health"
+	"testing"
 )
 
 func TestHealth(t *testing.T) {
