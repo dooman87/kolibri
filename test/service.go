@@ -1,18 +1,19 @@
 //Provides helper to test http handlers.
 package test
+
 import (
-	"testing"
-	"net/http/httptest"
 	"net/http"
+	"net/http/httptest"
+	"testing"
 )
 
 //Describes test case. Each test case
 //will be executed as http request agains
 //Service handler.
-type TestCase struct{
-	Url string
+type TestCase struct {
+	Url          string
 	ExpectedCode int
-	Description string
+	Description  string
 }
 
 var (
