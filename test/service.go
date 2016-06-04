@@ -7,13 +7,17 @@ import (
 	"testing"
 )
 
+type ResponseHandler func(w *httptest.ResponseRecorder, t *testing.T)
+
 //Describes test case. Each test case
-//will be executed as http request agains
+//will be executed as http request against
 //Service handler.
 type TestCase struct {
 	Url          string
 	ExpectedCode int
 	Description  string
+	//Optional handler that will be called at the end of the test case.
+	Handler ResponseHandler
 }
 
 var (
@@ -42,5 +46,9 @@ func request(tc *TestCase, t *testing.T) {
 
 	if w.Code != tc.ExpectedCode {
 		t.Fatalf("Test [%s] failed: expected code %d, but got %d", tc.Description, tc.ExpectedCode, w.Code)
+	}
+
+	if tc.Handler != nil {
+		tc.Handler(w, t)
 	}
 }

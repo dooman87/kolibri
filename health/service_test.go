@@ -2,21 +2,22 @@ package health_test
 
 import (
 	"github.com/dooman87/kolibri/health"
+	"github.com/dooman87/kolibri/test"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 )
 
 func TestHealth(t *testing.T) {
-	req, err := http.NewRequest("GET", "http://localhost/health", nil)
-	if err != nil {
-		t.Fatal(err)
-	}
-	w := httptest.NewRecorder()
-	health.Health(w, req)
+	test.Service = health.Health
 
-	expected := "OK"
-	if w.Body.String() != expected {
-		t.Fatalf("Expected %s but got %s", expected, w.Body.String())
+	testCases := []test.TestCase{
+		{"http://localhost/health", http.StatusOK, "Should return OK in body", func(w *httptest.ResponseRecorder, t *testing.T) {
+			expectedResponse := "OK"
+			if w.Body.String() != expectedResponse {
+				t.Errorf("Expected %s but got %s", expectedResponse, w.Body.String())
+			}
+		}},
 	}
+	test.RunRequests(testCases, t)
 }
