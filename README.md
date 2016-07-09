@@ -1,5 +1,7 @@
 # Kolibri - not a framework for micro services.
 
+[![Build Status](https://travis-ci.org/dooman87/kolibri.svg?branch=master)](https://travis-ci.org/dooman87/kolibri)
+
 Kolibri is a set of lightweight helpers that I found useful to have 
 during micro services development. Currently, it's providing next 
 functionality:
