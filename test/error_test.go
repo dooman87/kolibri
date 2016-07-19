@@ -8,8 +8,10 @@ import (
 
 func TestError(t *testing.T) {
 	test.Error(t,
-		&test.Equal(1, 1, "apples"),
-		&test.Nil("Bob", "student name"),
+		test.Equal(1, 1, "apples"),
+		test.NotEqual(1, 2, "oranges"),
+		test.NotNil("Bob", "student name"),
+		test.Nil(nil, "error"),
 	)
 }
 
