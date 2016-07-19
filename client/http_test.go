@@ -2,6 +2,7 @@ package client
 
 import (
 	"fmt"
+	"github.com/dooman87/kolibri/test"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -21,18 +22,13 @@ func TestGetJson(t *testing.T) {
 
 	s := &S{}
 	err, code := GetJson(ts.URL, s)
-	if err != nil {
-		t.Error(err)
-	}
 
-	if s.Field != "value" {
-		t.Errorf("Expected field to be [%s], but got [%s]", "value", s.Field)
-	}
-
-	if code != 200 {
-		t.Errorf("Expected code [%d], but got [%d]", 200, code)
-	}
-	testHttpCallsCount(1, t)
+	test.Error(t,
+		test.Nil(err, "error"),
+		test.Equal(1, httpCallsCount, "calls to http server"),
+		test.Equal(200, code, "code"),
+		test.Equal("value", s.Field, "response"),
+	)
 }
 
 func TestGetJsonErrorResponse(t *testing.T) {
@@ -40,8 +36,10 @@ func TestGetJsonErrorResponse(t *testing.T) {
 	defer ts.Close()
 
 	err, _ := GetJson(ts.URL, &S{})
-	testError(err, t)
-	testHttpCallsCount(1, t)
+	test.Error(t,
+		test.NotNil(err, "error"),
+		test.Equal(1, httpCallsCount, "calls to http server"),
+	)
 }
 
 func TestGetJsonInvalidJson(t *testing.T) {
@@ -49,8 +47,10 @@ func TestGetJsonInvalidJson(t *testing.T) {
 	defer ts.Close()
 
 	err, _ := GetJson(ts.URL, &S{})
-	testError(err, t)
-	testHttpCallsCount(1, t)
+	test.Error(t,
+		test.NotNil(err, "error"),
+		test.Equal(1, httpCallsCount, "calls to http server"),
+	)
 }
 
 func TestGetJsonTargetIsNil(t *testing.T) {
@@ -58,8 +58,10 @@ func TestGetJsonTargetIsNil(t *testing.T) {
 	defer ts.Close()
 
 	err, _ := GetJson(ts.URL, nil)
-	testError(err, t)
-	testHttpCallsCount(0, t)
+	test.Error(t,
+		test.NotNil(err, "error"),
+		test.Equal(0, httpCallsCount, "calls to http server"),
+	)
 }
 
 func TestGetJsonUrlIsEmpty(t *testing.T) {
@@ -67,20 +69,10 @@ func TestGetJsonUrlIsEmpty(t *testing.T) {
 	defer ts.Close()
 
 	err, _ := GetJson("", &S{})
-	testError(err, t)
-	testHttpCallsCount(0, t)
-}
-
-func testError(err error, t *testing.T) {
-	if err == nil {
-		t.Error("Expected getting error")
-	}
-}
-
-func testHttpCallsCount(expectedCallsCount int, t *testing.T) {
-	if httpCallsCount != expectedCallsCount {
-		t.Fatalf("Expected %d calls to http server but got %d", expectedCallsCount, httpCallsCount)
-	}
+	test.Error(t,
+		test.NotNil(err, "error"),
+		test.Equal(0, httpCallsCount, "calls to http server"),
+	)
 }
 
 func startServer(code int, resp string) *httptest.Server {

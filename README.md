@@ -50,7 +50,30 @@ func ExampleRunRequests() {
 }
 ```
 
+## Testing helpers
+
+* Test multiple statements with asserts. Simplifies code like
+
+```
+    if data.Id != 1 {
+        t.Errorf("Expected [%d] id but got [%d]", 1, data.Id)
+    }
+    if data.Squirell == nil {
+        t.Errorf("Expected squirell to not be nil", "Jack", data.SquirellName)
+    }
+```
+
+to
+
+```
+	test.Error(t,
+		test.Equal(1, data.Id, "id"),
+		test.NotNil(data.SquirellName, "squirell"),
+	)
+```
+
 ## Contribution
 
-Firstly, create a ticket and we can discuss a change. After that, you are welcome to create PRs and 
-I'm happy to review and merge them. Happy Coding! 
+Firstly, create a ticket and we can discuss a change. After that, 
+you are more then welcome to create PRs and I'm happy to review and 
+merge them. Happy Coding! 
