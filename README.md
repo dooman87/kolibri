@@ -13,6 +13,12 @@ functionality:
 One of the goal is to have minimum dependencies. Currently it requires
 only Go 1.5+.
 
+## Installation
+
+```
+$ go get github.com/dooman87/kolibri/...
+```
+
 ## Http Client
 
 Getting JSON form HTTP endpoint and marshalling it to interface. 
@@ -24,8 +30,10 @@ http, mongo, etc.
 
 ## Service Testing
 
-Provides TestCase abstraction that allow you to easily test your 
-endpoints. Example:
+Provides TestCase abstraction that allows you to easily test your HTTP
+endpoints. 
+
+Example:
 
 ```
 func ExampleRunRequests() {
@@ -59,7 +67,7 @@ func ExampleRunRequests() {
         t.Errorf("Expected [%d] id but got [%d]", 1, data.Id)
     }
     if data.Squirell == nil {
-        t.Errorf("Expected squirell to not be nil", "Jack", data.SquirellName)
+        t.Errorf("Expected squirell to not be nil")
     }
 ```
 
