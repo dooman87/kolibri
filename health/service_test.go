@@ -3,7 +3,6 @@ package health_test
 import (
 	"github.com/dooman87/kolibri/health"
 	"github.com/dooman87/kolibri/test"
-	"net/http"
 	"net/http/httptest"
 	"testing"
 )

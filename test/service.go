@@ -56,7 +56,12 @@ func request(tc *TestCase, t *testing.T) {
 	var (
 		req *http.Request
 		err error
+		expectedCode = tc.ExpectedCode
 	)
+
+	if expectedCode == 0 {
+		expectedCode = http.StatusOK
+	}
 
 	if len(tc.Url) > 0 {
 		req, err = http.NewRequest("GET", tc.Url, nil)
@@ -71,7 +76,7 @@ func request(tc *TestCase, t *testing.T) {
 
 	Service.ServeHTTP(w, req)
 
-	if (tc.ExpectedCode == 0 && w.Code != http.StatusOK) || w.Code != tc.ExpectedCode {
+	if w.Code != expectedCode {
 		t.Fatalf("Test [%s] failed: expected code %d, but got %d", tc.Description, tc.ExpectedCode, w.Code)
 	}
 
