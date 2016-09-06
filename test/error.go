@@ -57,7 +57,7 @@ type nilAssert struct {
 }
 
 func (a *nilAssert) Exec(t *testing.T) {
-	if !reflect.ValueOf(a.Actual).IsNil() {
+	if a.Actual != nil && !reflect.ValueOf(a.Actual).IsNil() {
 		t.Errorf("Expected %s to be nil", a.Description)
 	}
 }
