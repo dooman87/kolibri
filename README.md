@@ -15,7 +15,8 @@ only Go 1.5+.
 
 ## Http Client
 
-Getting JSON form HTTP endpoint and marshalling it to interface. 
+Getting/sending JSON to HTTP endpoint and marshalling it to interface.
+Supporting GET and POST methods.
 
 ## Health Checks
 
