@@ -21,7 +21,8 @@ $ go get github.com/dooman87/kolibri/...
 
 ## Http Client
 
-Getting JSON form HTTP endpoint and marshalling it to interface. 
+Getting/sending JSON to HTTP endpoint and marshalling it to interface.
+Supporting GET and POST methods.
 
 ## Health Checks
 

@@ -7,11 +7,18 @@ import (
 )
 
 func TestError(t *testing.T) {
+	var nilPtr *int
+	var nilErr error
+	notNilErr := errors.New("Err")
+	i := 5
+
 	test.Error(t,
 		test.Equal(1, 1, "apples"),
 		test.NotEqual(1, 2, "oranges"),
-		test.NotNil("Bob", "student name"),
-		test.Nil(nil, "error"),
+		test.NotNil(&i, "i"),
+		test.Nil(nilPtr, "pointer"),
+		test.Nil(nilErr, "error"),
+		test.NotNil(notNilErr, "error"),
 	)
 }
 

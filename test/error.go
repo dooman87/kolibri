@@ -1,6 +1,7 @@
 package test
 
 import (
+	"reflect"
 	"testing"
 )
 
@@ -56,7 +57,7 @@ type nilAssert struct {
 }
 
 func (a *nilAssert) Exec(t *testing.T) {
-	if a.Actual != nil {
+	if a.Actual != nil && !reflect.ValueOf(a.Actual).IsNil() {
 		t.Errorf("Expected %s to be nil", a.Description)
 	}
 }
@@ -75,7 +76,8 @@ type notNilAssert struct {
 }
 
 func (a *notNilAssert) Exec(t *testing.T) {
-	if a.Actual == nil {
+
+	if reflect.ValueOf(a.Actual).IsNil() {
 		t.Errorf("Expected %s to not be nil", a.Description)
 	}
 }
