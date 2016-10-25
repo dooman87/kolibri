@@ -22,7 +22,7 @@ func TestGetJson(t *testing.T) {
 	defer ts.Close()
 
 	s := &S{}
-	err, code := client.GetJson(ts.URL, s)
+	err, code := (&client.Http{}).GetJson(ts.URL, s)
 
 	test.Error(t,
 		test.Nil(err, "error"),
@@ -36,7 +36,7 @@ func TestGetJsonErrorResponse(t *testing.T) {
 	ts := startServer(404, "Not found")
 	defer ts.Close()
 
-	err, _ := client.GetJson(ts.URL, &S{})
+	err, _ := (&client.Http{}).GetJson(ts.URL, &S{})
 	test.Error(t,
 		test.NotNil(err, "error"),
 		test.Equal(1, httpCallsCount, "calls to http server"),
@@ -47,7 +47,7 @@ func TestGetJsonInvalidJson(t *testing.T) {
 	ts := startServer(200, "That's not a json.")
 	defer ts.Close()
 
-	err, _ := client.GetJson(ts.URL, &S{})
+	err, _ := (&client.Http{}).GetJson(ts.URL, &S{})
 	test.Error(t,
 		test.NotNil(err, "error"),
 		test.Equal(1, httpCallsCount, "calls to http server"),
@@ -58,7 +58,7 @@ func TestGetJsonTargetIsNil(t *testing.T) {
 	ts := startServer(200, `{"field": "value"}`)
 	defer ts.Close()
 
-	err, _ := client.GetJson(ts.URL, nil)
+	err, _ := (&client.Http{}).GetJson(ts.URL, nil)
 	test.Error(t,
 		test.NotNil(err, "error"),
 		test.Equal(0, httpCallsCount, "calls to http server"),
@@ -69,7 +69,7 @@ func TestGetJsonUrlIsEmpty(t *testing.T) {
 	ts := startServer(200, `{"field": "value"}`)
 	defer ts.Close()
 
-	err, _ := client.GetJson("", &S{})
+	err, _ := (&client.Http{}).GetJson("", &S{})
 	test.Error(t,
 		test.NotNil(err, "error"),
 		test.Equal(0, httpCallsCount, "calls to http server"),
@@ -84,7 +84,7 @@ func TestPostJson(t *testing.T) {
 		Field: "value",
 	}
 	resp := &S{}
-	err, _ := client.PostJson(ts.URL, s, resp)
+	err, _ := (&client.Http{}).PostJson(ts.URL, s, resp)
 	test.Error(t,
 		test.Nil(err, "error"),
 		test.Equal(1, httpCallsCount, "calls to http server"),
@@ -96,7 +96,7 @@ func TestPostJsonUrlIsEmpty(t *testing.T) {
 	ts := startServer(200, `{"field": "value"}`)
 	defer ts.Close()
 
-	err, _ := client.PostJson("", nil, nil)
+	err, _ := (&client.Http{}).PostJson("", nil, nil)
 	test.Error(t,
 		test.NotNil(err, "error"),
 		test.Equal(0, httpCallsCount, "calls to http server"),
@@ -108,7 +108,7 @@ func TestPostJsonBodyIsNil(t *testing.T) {
 	defer ts.Close()
 
 	resp := &S{}
-	err, _ := client.PostJson(ts.URL, nil, resp)
+	err, _ := (&client.Http{}).PostJson(ts.URL, nil, resp)
 	test.Error(t,
 		test.Nil(err, "error"),
 		test.Equal(1, httpCallsCount, "calls to http server"),
@@ -123,7 +123,7 @@ func TestPostJsonResponseIsNil(t *testing.T) {
 	s := &S{
 		Field: "value",
 	}
-	err, _ := client.PostJson(ts.URL, s, nil)
+	err, _ := (&client.Http{}).PostJson(ts.URL, s, nil)
 	test.Error(t,
 		test.Nil(err, "error"),
 		test.Equal(1, httpCallsCount, "calls to http server"),
@@ -138,7 +138,7 @@ func TestPostJsonErrorResponse(t *testing.T) {
 	s := &S{
 		Field: "value",
 	}
-	err, code := client.PostJson(ts.URL, s, resp)
+	err, code := (&client.Http{}).PostJson(ts.URL, s, resp)
 	test.Error(t,
 		test.NotNil(err, "error"),
 		test.Equal(500, code, "response status code"),
