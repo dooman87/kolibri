@@ -6,6 +6,7 @@ import (
 	"net/http/httptest"
 	"testing"
 	"io"
+	"log"
 )
 
 type ResponseHandler func(w *httptest.ResponseRecorder, t *testing.T)
@@ -33,17 +34,18 @@ var (
 	T *testing.T
 )
 
-//Runs all test cases and failing test if
-//response code is not equals to expected that that
-//in TestCase.ExpectedCode.
+//Runs all test cases. Will fail if test.T is nil.
 func RunRequests(testCases []TestCase) {
+	if T == nil {
+		log.Fatal("test.T can't be nil")
+	}
 	for _, tc := range testCases {
 		request(&tc, T)
 	}
 }
 
 // Wraps http.NewRequest to process error case.
-// If http.NewRequest returns error then executing interrupts execution with T.Fatal()
+// If http.NewRequest returns error then execution interrupts with T.Fatal()
 func NewRequest(method string, url string, body io.Reader) *http.Request {
 	req, err := http.NewRequest(method, url, body)
 	if err != nil {
